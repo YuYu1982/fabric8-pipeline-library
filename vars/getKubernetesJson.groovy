@@ -161,6 +161,8 @@ def deploymentConfig = """
             requests:
               cpu: ${limitCPU}
               memory: ${limitMemory}
+        nodeSelector:
+          cluster: production      
         terminationGracePeriodSeconds: 2
     triggers:
     - type: ConfigChange
