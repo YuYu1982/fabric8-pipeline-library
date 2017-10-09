@@ -52,7 +52,7 @@ def s2iBuild(version, noCache){
     def utils = new Utils()
     def ns = utils.namespace
     def is = getImageStream(ns)
-    def bc = getBuildConfig(version, ns)
+    def bc = getBuildConfig(version, ns, noCache)
 
     kubernetesApply(file: is, environment: ns)
     kubernetesApply(file: bc, environment: ns)
