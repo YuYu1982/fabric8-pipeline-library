@@ -4,7 +4,7 @@ import io.fabric8.Utils
 
 def call(body) {
     // evaluate the body block, and collect configuration into the object
-    def config = [version: '']
+    def config = [version: '', noCache: false]
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate = config
     body()
@@ -15,11 +15,16 @@ def call(body) {
             newVersion = getNewVersion {}
         }
 
+        def noCache = config.noCache
+        if (noCache == '') {
+            noCache = false
+        }
+
         env.setProperty('VERSION', newVersion)
 
         def flow = new Fabric8Commands()
         if (flow.isOpenShift()) {
-            s2iBuild(newVersion)
+            s2iBuild(newVersion, noCache)
         } else {
             dockerBuild(newVersion)
         }
@@ -42,7 +47,7 @@ def dockerBuild(version){
     }
 }
 
-def s2iBuild(version){
+def s2iBuild(version, noCache){
 
     def utils = new Utils()
     def ns = utils.namespace
@@ -66,7 +71,7 @@ metadata:
 """
 }
 
-def getBuildConfig(version, ns){
+def getBuildConfig(version, ns, noCache){
     return """
 apiVersion: v1
 kind: BuildConfig
@@ -83,5 +88,7 @@ spec:
     type: Binary
   strategy:
     type: Docker
+    dockerStrategy:
+      noCache: ${noCache}
 """
 }
