@@ -91,10 +91,10 @@ spec:
   strategy:
     type: Docker
     dockerStrategy:
-        - name: "HTTP_PROXY"
-          value: "http://101.132.158.165:40000"
-        - name: "HTTPS_PROXY"
-          value: "http://101.132.158.165:40000"  
+      - name: "HTTP_PROXY"
+        value: "http://101.132.158.165:40000"
+      - name: "HTTPS_PROXY"
+        value: "http://101.132.158.165:40000"  
       noCache: ${noCache}
 """
 }
