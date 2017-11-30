@@ -56,6 +56,8 @@ def s2iBuild(version, noCache){
 
     kubernetesApply(file: is, environment: ns)
     kubernetesApply(file: bc, environment: ns)
+    sh "echo JOB_NAME ${env.JOB_NAME}"
+    sh "echo ns ${ns}"
     sh "oc start-build ${env.JOB_NAME}-s2i --from-dir ../${env.JOB_NAME} --follow -n ${ns}"
     //sh "oc tag ${ns}/${env.JOB_NAME}:${version} demo-staging/${env.JOB_NAME}:${version}"
 
